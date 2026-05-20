@@ -3,7 +3,7 @@ uvicorn[standard]==0.30.2
 python-pptx==0.6.23
 requests==2.32.3
 python-dotenv==1.0.1
-google-api-python-client==1.12.5
+google-api-python-client==2.111.0
 matplotlib==3.10.0
 pillow==11.1.0
 groq==0.3.0
