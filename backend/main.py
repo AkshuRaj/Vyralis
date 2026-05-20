@@ -22,16 +22,19 @@ ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://127.0.0.1:5173",
-    "https://*.vercel.app",  # Vercel deployment domains
-    os.getenv("FRONTEND_URL", ""),  # Allow custom frontend URL from env
+    "http://127.0.0.1:5174",
 ]
 
-# Clean up empty strings from ALLOWED_ORIGINS
-ALLOWED_ORIGINS = [origin for origin in ALLOWED_ORIGINS if origin]
+# Add custom frontend URL from environment if provided
+if frontend_url := os.getenv("FRONTEND_URL", "").strip():
+    ALLOWED_ORIGINS.append(frontend_url)
 
+# For production: allow Vercel domains using wildcard
+# Note: CORS middleware with allow_origins=["*"] already handles all domains
+# For stricter security on production, replace with specific Vercel domain when known
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS + ["*"],  # "*" for dev; replace with specific domain in production
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
